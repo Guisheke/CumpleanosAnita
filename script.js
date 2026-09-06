@@ -168,6 +168,14 @@ togglePassword.addEventListener("click", () => {
 
 enterButton.addEventListener("click", checkPassword);
 
+// También permite enviar la contraseña presionando Enter desde el teclado.
+passwordInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    checkPassword(event);
+  }
+});
+
 const letterScene = document.getElementById("letterScene");
 const envelopeStage = document.getElementById("envelopeStage");
 const envelope = document.getElementById("envelope");
