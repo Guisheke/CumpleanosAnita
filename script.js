@@ -222,32 +222,65 @@ function launchConfetti() {
   if (!confettiContainer) return;
 
   confettiContainer.innerHTML = "";
-  const pieces = 95;
+  const pieces = 150;
   const shapes = ["square", "rectangle", "circle"];
 
   for (let i = 0; i < pieces; i++) {
     const piece = document.createElement("span");
     piece.className = `confetti-piece ${shapes[Math.floor(Math.random() * shapes.length)]}`;
 
-    const side = Math.random() < 0.5 ? "left" : "right";
-    const startX = side === "left"
-      ? Math.random() * 38
-      : 62 + Math.random() * 38;
+    // La mayoría cae por los costados y por encima de la carta,
+    // para que el texto siga siendo fácil de leer.
+    const zone = Math.random();
+    let startX;
+    let startY;
+
+    if (zone < 0.42) {
+      startX = 2 + Math.random() * 25;
+      startY = Math.random() * 35;
+    } else if (zone < 0.84) {
+      startX = 73 + Math.random() * 25;
+      startY = Math.random() * 35;
+    } else {
+      startX = 12 + Math.random() * 76;
+      startY = Math.random() * 14;
+    }
 
     piece.style.left = `${startX}vw`;
-    piece.style.top = `${-8 - Math.random() * 18}vh`;
-    piece.style.setProperty("--fall-x", `${(Math.random() - 0.5) * 26}vw`);
-    piece.style.setProperty("--rotate", `${Math.random() * 720 - 360}deg`);
-    piece.style.setProperty("--duration", `${3.2 + Math.random() * 2.2}s`);
-    piece.style.setProperty("--delay", `${Math.random() * 0.9}s`);
-    piece.style.setProperty("--size", `${7 + Math.random() * 7}px`);
+    piece.style.top = `${startY}vh`;
+    piece.style.setProperty("--fall-x", `${(Math.random() - 0.5) * 22}vw`);
+    piece.style.setProperty("--fall-y", `${45 + Math.random() * 65}vh`);
+    piece.style.setProperty("--rotate", `${Math.random() * 1080 - 540}deg`);
+    piece.style.setProperty("--duration", `${3 + Math.random() * 3}s`);
+    piece.style.setProperty("--delay", `${Math.random() * 0.65}s`);
+    piece.style.setProperty("--size", `${7 + Math.random() * 8}px`);
     confettiContainer.appendChild(piece);
   }
 
+  // Una segunda lluvia más pequeña hace que el efecto se sienta festivo
+  // durante unos segundos sin dejar confeti permanentemente en pantalla.
+  setTimeout(() => {
+    if (!letterPaper.classList.contains("show")) return;
+    for (let i = 0; i < 45; i++) {
+      const piece = document.createElement("span");
+      piece.className = `confetti-piece ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+      piece.style.left = `${5 + Math.random() * 90}vw`;
+      piece.style.top = `${-5 - Math.random() * 8}vh`;
+      piece.style.setProperty("--fall-x", `${(Math.random() - 0.5) * 28}vw`);
+      piece.style.setProperty("--fall-y", `${105 + Math.random() * 25}vh`);
+      piece.style.setProperty("--rotate", `${Math.random() * 1080 - 540}deg`);
+      piece.style.setProperty("--duration", `${3.5 + Math.random() * 2.5}s`);
+      piece.style.setProperty("--delay", `${Math.random() * 0.4}s`);
+      piece.style.setProperty("--size", `${6 + Math.random() * 7}px`);
+      confettiContainer.appendChild(piece);
+    }
+  }, 900);
+
   setTimeout(() => {
     confettiContainer.innerHTML = "";
-  }, 7000);
+  }, 8500);
 }
+
 
 passwordInput.addEventListener("input", () => {
   if (feedback.innerHTML) clearFeedback();
