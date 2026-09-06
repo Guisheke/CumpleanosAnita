@@ -74,6 +74,8 @@ function checkPassword(event) {
     sin revelar directamente la contraseña.
   */
 
+  // La aventura avanza con cada intento: desde el tercero aparece
+  // la pista romántica sobre ese día tan especial.
   if (entered === "anilu") {
     revealHint(2);
     showFeedback(
@@ -81,39 +83,37 @@ function checkPassword(event) {
       "Encontraste una parte, mi amor, sigue intentando. ❤️"
     );
   } else if (entered === "100903") {
-    revealHint(3);
+    revealHint(attempts >= 3 ? 3 : 3);
     showFeedback(
       "También encontraste una parte... pero todavía falta saber de quién estamos hablando. ❤️",
-      "Muy bien mi amor, ya tienes una parte, ahora encuentra la otra. 🥰"
+      "No podía ser tan corto, ¿verdad? 👀"
     );
   } else if (
     entered === "anita100903" ||
     entered === "princesaanita" ||
     entered === "anita"
   ) {
-    revealHint(2);
+    revealHint(attempts >= 3 ? 3 : 2);
     showFeedback(
       "Estás cerca. Hay un nombre que alguien de tu familia te decía de una manera muy especial... 👀",
-      "Estás cerca mi amor pero hay un nombre más especial. ❤️"
+      "Estas cerca mi amor pero hay un nombre mas especial"
     );
-  } else if (
-    entered === "ana100903" ||
-    entered === "ana"
-  ) {
-    revealHint(1);
+  } else if (entered === "ana100903" || entered === "ana") {
+    revealHint(attempts >= 3 ? 3 : 1);
     showFeedback(
       "Estás cerca... pero hay alguien de tu familia que te llamó de una manera muy especial. ¿Recuerdas?",
       "Sigue buscando mi amor, estoy segura de que lo recuerdas. 🥰"
     );
   } else {
-    if (attempts >= 2) revealHint(1);
-    if (attempts >= 4) revealHint(2);
-    if (attempts >= 6) revealHint(3);
-    if (attempts >= 8) revealHint(4);
+    // No importa qué escriba: al tercer intento ya recibe la pista 3.
+    if (attempts === 1) revealHint(1);
+    else if (attempts === 2) revealHint(2);
+    else if (attempts < 6) revealHint(3);
+    else revealHint(4);
 
     showFeedback(
       "Recuerda que todas las respuestas están relacionadas contigo. ❤️",
-      "Sigue las pistas mi niña, estás a punto de lograrlo. ❤️"
+      "Sigue las pistas mi niña, estás a punto de lograrlo. 🥰"
     );
   }
 
