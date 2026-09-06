@@ -667,3 +667,25 @@ h1 span {
     opacity: .9;
   }
 }
+
+/* Ajuste final del confeti: siempre visible por encima de la carta. */
+.letter-scene .confetti-container {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+.letter-scene .confetti-piece {
+  position: absolute !important;
+  display: block !important;
+  opacity: 1 !important;
+  z-index: 10000 !important;
+  will-change: transform, opacity;
+  animation: confettiFall var(--duration) cubic-bezier(.2,.65,.35,1) var(--delay) forwards !important;
+}
+@keyframes confettiFall {
+  0% { opacity: 0; transform: translate3d(0,0,0) rotate(0deg) scale(.8); }
+  8% { opacity: 1; }
+  100% { opacity: .95; transform: translate3d(var(--fall-x),var(--fall-y),0) rotate(var(--rotate)) scale(1); }
+}

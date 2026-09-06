@@ -222,81 +222,21 @@ openLetterButton.addEventListener("click", () => {
   }, 1050);
 });
 
-let confettiAudioContext = null;
+let confettiAudio = null;
 
 function startConfettiSound() {
   try {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    if (!confettiAudioContext) {
-      confettiAudioContext = new AudioContextClass();
+    confettiAudio = new Audio("confetti.wav");
+    confettiAudio.volume = 0.32;
+    confettiAudio.preload = "auto";
+    confettiAudio.currentTime = 0;
+    // El archivo contiene 1 segundo de silencio y luego el efecto,
+    // así queda sincronizado con la apertura de la carta.
+    const playPromise = confettiAudio.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
     }
-
-    const ctx = confettiAudioContext;
-    const schedule = () => scheduleConfettiSound(ctx, ctx.currentTime + 1.05);
-
-    if (ctx.state === "suspended") {
-      const resumed = ctx.resume();
-      if (resumed && typeof resumed.then === "function") {
-        resumed.then(schedule).catch(() => {});
-      } else {
-        schedule();
-      }
-    } else {
-      schedule();
-    }
-  } catch (error) {
-    // El efecto visual funciona aunque el navegador bloquee el audio.
-  }
-}
-
-function scheduleConfettiSound(ctx, startAt) {
-  try {
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0.0001, startAt);
-    master.gain.linearRampToValueAtTime(0.22, startAt + 0.018);
-    master.gain.exponentialRampToValueAtTime(0.0001, startAt + 0.72);
-    master.connect(ctx.destination);
-
-    // Ruido filtrado para imitar el papel del confeti al salir.
-    const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.72), ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i++) {
-      const envelope = Math.pow(1 - i / data.length, 1.7);
-      data[i] = (Math.random() * 2 - 1) * envelope;
-    }
-
-    const noise = ctx.createBufferSource();
-    const filter = ctx.createBiquadFilter();
-    filter.type = "bandpass";
-    filter.frequency.setValueAtTime(3600, startAt);
-    filter.Q.value = 0.75;
-    noise.buffer = buffer;
-    noise.connect(filter);
-    filter.connect(master);
-    noise.start(startAt);
-    noise.stop(startAt + 0.7);
-
-    // Varios pops rápidos para que suene como un cañón de confeti.
-    for (let i = 0; i < 12; i++) {
-      const t = startAt + 0.025 + i * 0.052 + Math.random() * 0.018;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(1100 + Math.random() * 1100, t);
-      osc.frequency.exponentialRampToValueAtTime(350 + Math.random() * 220, t + 0.065);
-      gain.gain.setValueAtTime(0.0001, t);
-      gain.gain.linearRampToValueAtTime(0.085, t + 0.006);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.075);
-      osc.connect(gain);
-      gain.connect(master);
-      osc.start(t);
-      osc.stop(t + 0.08);
-    }
-  } catch (error) {
-    // El efecto visual no depende del sonido.
-  }
+  } catch (error) {}
 }
 
 function launchConfetti(audioStart = null) {
