@@ -58,7 +58,7 @@
         <strong>¿Podrás descubrir la contraseña?</strong>
       </p>
 
-      <form id="passwordForm" autocomplete="off">
+      <div id="passwordForm" class="password-form">
         <div class="input-wrapper">
           <input
             id="passwordInput"
@@ -72,11 +72,11 @@
           <button type="button" class="show-password" id="togglePassword" aria-label="Mostrar u ocultar contraseña">♡</button>
         </div>
 
-        <button class="enter-button" type="submit">
+        <button class="enter-button" type="button" id="enterButton">
           <span>Entrar</span>
           <span class="arrow">→</span>
         </button>
-      </form>
+      </div>
 
       <div class="feedback" id="feedback" aria-live="polite"></div>
 

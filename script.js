@@ -1,6 +1,7 @@
 const CORRECT_PASSWORD = "anilu100903";
 
 const passwordForm = document.getElementById("passwordForm");
+const enterButton = document.getElementById("enterButton");
 const passwordInput = document.getElementById("passwordInput");
 const feedback = document.getElementById("feedback");
 const lockCard = document.getElementById("lockCard");
@@ -47,7 +48,7 @@ function shakeCard() {
 }
 
 function checkPassword(event) {
-  event.preventDefault();
+  if (event) event.preventDefault();
 
   const entered = normalize(passwordInput.value);
 
@@ -165,7 +166,7 @@ togglePassword.addEventListener("click", () => {
   togglePassword.textContent = isPassword ? "◉" : "♡";
 });
 
-passwordForm.addEventListener("submit", checkPassword);
+enterButton.addEventListener("click", checkPassword);
 
 const letterScene = document.getElementById("letterScene");
 const envelopeStage = document.getElementById("envelopeStage");
