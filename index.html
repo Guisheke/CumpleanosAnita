@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7a8c4">
+  <title>Para mi amor ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="background">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <div class="balloon balloon-1"><span></span></div>
+    <div class="balloon balloon-2"><span></span></div>
+    <div class="balloon balloon-3"><span></span></div>
+    <div class="balloon balloon-4"><span></span></div>
+    <div class="balloon balloon-5"><span></span></div>
+    <div class="balloon balloon-6"><span></span></div>
+
+    <div class="confetti confetti-1">✦</div>
+    <div class="confetti confetti-2">♡</div>
+    <div class="confetti confetti-3">✧</div>
+    <div class="confetti confetti-4">♡</div>
+    <div class="confetti confetti-5">✦</div>
+    <div class="confetti confetti-6">♥</div>
+  </div>
+
+  <main class="page">
+    <section class="intro">
+      <div class="little-heart">♡</div>
+
+      <h1>¡Feliz cumpleaños,<br><span>mi amor!</span></h1>
+
+      <p class="intro-text">
+        Hoy es un día muy especial y preparé algo<br class="desktop">
+        especialmente para ti. 💗
+      </p>
+
+      <p class="intro-text small">
+        Pero antes de abrir tu regalo...<br>
+        hay un pequeño secreto que tendrás que descubrir.
+      </p>
+    </section>
+
+    <section class="lock-card" id="lockCard">
+      <div class="lock-icon" id="lockIcon">🔒</div>
+
+      <h2>Hay una carta esperándote...</h2>
+
+      <p class="subtitle">
+        Pero está protegida.<br>
+        <strong>¿Podrás descubrir la contraseña?</strong>
+      </p>
+
+      <form id="passwordForm" autocomplete="off">
+        <div class="input-wrapper">
+          <input
+            id="passwordInput"
+            type="text"
+            placeholder="Escribe la contraseña..."
+            aria-label="Contraseña"
+            spellcheck="false"
+            autocapitalize="none"
+            autocomplete="off"
+          >
+          <button type="button" class="show-password" id="togglePassword" aria-label="Mostrar u ocultar contraseña">♡</button>
+        </div>
+
+        <button class="enter-button" type="submit">
+          <span>Entrar</span>
+          <span class="arrow">→</span>
+        </button>
+      </form>
+
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+
+      <div class="hint-box">
+        <div class="hint-title">💡 Pistas</div>
+
+        <div class="hint locked-hint" id="hint1">
+          <span class="hint-number">1</span>
+          <p>Hay un nombre que alguien de tu familia te decía de una manera muy especial... ❤️</p>
+        </div>
+
+        <div class="hint locked-hint hidden" id="hint2">
+          <span class="hint-number">2</span>
+          <p>Ese apodo nació de tu propio nombre: <strong>Ana Lucía</strong>. 👀</p>
+        </div>
+
+        <div class="hint locked-hint hidden" id="hint3">
+          <span class="hint-number">3</span>
+          <p>La segunda parte tiene que ver con el día en que llegaste al mundo. 🎂</p>
+        </div>
+
+        <div class="hint locked-hint hidden" id="hint4">
+          <span class="hint-number">4</span>
+          <p>Junta el apodo que descubriste con la fecha que acabas de recordar. 💕</p>
+        </div>
+      </div>
+    </section>
+
+    <p class="bottom-message">
+      Hay una pequeña aventura esperándote...<br>
+      <span>¿Lista, mi niña?</span> ❤️
+    </p>
+  </main>
+
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-content">
+      <div class="success-heart">♥</div>
+      <div class="success-lock">🔓</div>
+      <h2>¡Lo lograste!</h2>
+      <p>Sabía que ibas a descubrirlo, mi amor. ❤️</p>
+      <p class="success-small">Ahora sí... tu regalo puede comenzar.</p>
+      <button id="continueButton">Abrir mi regalo ✨</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
