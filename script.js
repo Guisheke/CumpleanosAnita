@@ -18,6 +18,7 @@ const hints = [
 ];
 
 let attempts = 0;
+let passwordVisible = false;
 
 function normalize(value) {
   return value.trim().toLowerCase();
@@ -52,17 +53,25 @@ function checkPassword(event) {
 
   const entered = normalize(passwordInput.value);
 
+  // Conserva el estado elegido por la usuaria (visible u oculta).
+  const restorePasswordVisibility = () => {
+    passwordInput.type = passwordVisible ? "text" : "password";
+    togglePassword.textContent = "♡";
+  };
+
   if (!entered) {
     showFeedback(
       "Primero tienes que intentar descubrirla... 👀",
       "Vamos mi amor, tú puedes. ❤️"
     );
     shakeCard();
+    restorePasswordVisibility();
     return;
   }
 
   if (entered === CORRECT_PASSWORD) {
     unlock();
+    setTimeout(restorePasswordVisibility, 0);
     return;
   }
 
@@ -114,6 +123,7 @@ function checkPassword(event) {
   }
 
   passwordInput.select();
+  setTimeout(restorePasswordVisibility, 0);
 }
 
 function unlock() {
@@ -160,10 +170,12 @@ function createHeartBurst() {
   }
 }
 
-togglePassword.addEventListener("click", () => {
-  const isPassword = passwordInput.type === "password";
-  passwordInput.type = isPassword ? "text" : "password";
-  togglePassword.textContent = isPassword ? "◉" : "♡";
+togglePassword.addEventListener("click", (event) => {
+  event.preventDefault();
+  passwordVisible = !passwordVisible;
+  passwordInput.type = passwordVisible ? "text" : "password";
+  togglePassword.textContent = "♡";
+  passwordInput.focus();
 });
 
 enterButton.addEventListener("click", checkPassword);
