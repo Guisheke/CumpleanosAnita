@@ -211,17 +211,94 @@ openLetterButton.addEventListener("click", () => {
   envelope.classList.add("open");
   openLetterButton.disabled = true;
   openLetterButton.textContent = "Tu carta está abriéndose... 💗";
+
+  // Preparamos el audio dentro del clic del usuario para evitar que
+  // el navegador bloquee la reproducción automática.
+  const audioStart = prepareConfettiSound();
+
   setTimeout(() => {
     envelopeStage.style.display = "none";
     letterPaper.classList.add("show");
-    launchConfetti();
+    launchConfetti(audioStart);
   }, 1050);
 });
 
-function launchConfetti() {
+let confettiAudioContext = null;
+
+function prepareConfettiSound() {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return null;
+
+    if (!confettiAudioContext) {
+      confettiAudioContext = new AudioContextClass();
+    }
+
+    if (confettiAudioContext.state === "suspended") {
+      confettiAudioContext.resume();
+    }
+
+    return confettiAudioContext.currentTime + 1.05;
+  } catch (error) {
+    return null;
+  }
+}
+
+function playConfettiSound(startAt) {
+  try {
+    const ctx = confettiAudioContext;
+    if (!ctx || startAt === null || ctx.state !== "running") return;
+
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, startAt);
+    master.gain.linearRampToValueAtTime(0.16, startAt + 0.025);
+    master.gain.exponentialRampToValueAtTime(0.0001, startAt + 0.58);
+    master.connect(ctx.destination);
+
+    // Ruido corto filtrado: recuerda al papel del confeti al salir.
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.65, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    }
+
+    const noise = ctx.createBufferSource();
+    const filter = ctx.createBiquadFilter();
+    filter.type = "highpass";
+    filter.frequency.setValueAtTime(1500, startAt);
+    filter.Q.value = 0.7;
+    noise.buffer = buffer;
+    noise.connect(filter);
+    filter.connect(master);
+    noise.start(startAt);
+    noise.stop(startAt + 0.62);
+
+    // Pequeños "pops" agudos para darle el toque de cañón de confeti.
+    for (let i = 0; i < 9; i++) {
+      const t = startAt + 0.04 + i * 0.045 + Math.random() * 0.025;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(850 + Math.random() * 900, t);
+      osc.frequency.exponentialRampToValueAtTime(280 + Math.random() * 180, t + 0.055);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(0.055, t + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.065);
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(t);
+      osc.stop(t + 0.07);
+    }
+  } catch (error) {
+    // Si el navegador no permite audio, el confeti sigue funcionando normalmente.
+  }
+}
+
+function launchConfetti(audioStart = null) {
   if (!confettiContainer) return;
 
   confettiContainer.innerHTML = "";
+  playConfettiSound(audioStart);
   const pieces = 150;
   const shapes = ["square", "rectangle", "circle"];
 
