@@ -619,3 +619,49 @@ h1 span {
   .letter-scene .birthday-decor .balloon-3 { right: -22px; }
   .letter-scene .birthday-decor .balloon-4 { right: -14px; }
 }
+
+
+/* Confeti que aparece cuando la carta se revela. Queda alrededor de la hoja para no tapar el texto. */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: var(--size);
+  height: calc(var(--size) * 1.45);
+  border-radius: 2px;
+  opacity: 0;
+  background: #f05a8d;
+  animation: confettiFall var(--duration) cubic-bezier(.2,.65,.35,1) var(--delay) forwards;
+}
+
+.confetti-piece:nth-child(4n) { background: #f7c94c; }
+.confetti-piece:nth-child(4n + 1) { background: #64b5f6; }
+.confetti-piece:nth-child(4n + 2) { background: #bd6cf2; }
+.confetti-piece:nth-child(4n + 3) { background: #ff7f50; }
+.confetti-piece.circle { border-radius: 50%; }
+.confetti-piece.rectangle { height: calc(var(--size) * .7); width: calc(var(--size) * 1.8); }
+
+@keyframes confettiFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -4vh, 0) rotate(0deg);
+  }
+  10% { opacity: 1; }
+  100% {
+    opacity: .9;
+    transform: translate3d(var(--fall-x), 118vh, 0) rotate(var(--rotate));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    animation: none;
+    opacity: .8;
+  }
+}

@@ -193,6 +193,7 @@ const envelopeStage = document.getElementById("envelopeStage");
 const envelope = document.getElementById("envelope");
 const openLetterButton = document.getElementById("openLetterButton");
 const letterPaper = document.getElementById("letterPaper");
+const confettiContainer = document.getElementById("confettiContainer");
 
 continueButton.addEventListener("click", (event) => {
   event.preventDefault();
@@ -210,8 +211,43 @@ openLetterButton.addEventListener("click", () => {
   envelope.classList.add("open");
   openLetterButton.disabled = true;
   openLetterButton.textContent = "Tu carta está abriéndose... 💗";
-  setTimeout(() => { envelopeStage.style.display = "none"; letterPaper.classList.add("show"); }, 1050);
+  setTimeout(() => {
+    envelopeStage.style.display = "none";
+    letterPaper.classList.add("show");
+    launchConfetti();
+  }, 1050);
 });
+
+function launchConfetti() {
+  if (!confettiContainer) return;
+
+  confettiContainer.innerHTML = "";
+  const pieces = 95;
+  const shapes = ["square", "rectangle", "circle"];
+
+  for (let i = 0; i < pieces; i++) {
+    const piece = document.createElement("span");
+    piece.className = `confetti-piece ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+
+    const side = Math.random() < 0.5 ? "left" : "right";
+    const startX = side === "left"
+      ? Math.random() * 38
+      : 62 + Math.random() * 38;
+
+    piece.style.left = `${startX}vw`;
+    piece.style.top = `${-8 - Math.random() * 18}vh`;
+    piece.style.setProperty("--fall-x", `${(Math.random() - 0.5) * 26}vw`);
+    piece.style.setProperty("--rotate", `${Math.random() * 720 - 360}deg`);
+    piece.style.setProperty("--duration", `${3.2 + Math.random() * 2.2}s`);
+    piece.style.setProperty("--delay", `${Math.random() * 0.9}s`);
+    piece.style.setProperty("--size", `${7 + Math.random() * 7}px`);
+    confettiContainer.appendChild(piece);
+  }
+
+  setTimeout(() => {
+    confettiContainer.innerHTML = "";
+  }, 7000);
+}
 
 passwordInput.addEventListener("input", () => {
   if (feedback.innerHTML) clearFeedback();
