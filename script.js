@@ -69,21 +69,24 @@ function checkPassword(event) {
   shakeCard();
 
   /*
-    Pistas y comentarios separados.
-    Las condiciones buscan reconocer algunos intentos probables
-    sin revelar directamente la contraseña.
+    La pista SIEMPRE depende del número de intento, nunca de lo que escriba.
+    1 -> pista 1
+    2 -> pista 2
+    3-5 -> pista 3
+    6+ -> pista 4
   */
+  if (attempts === 1) revealHint(1);
+  else if (attempts === 2) revealHint(2);
+  else if (attempts < 6) revealHint(3);
+  else revealHint(4);
 
-  // La aventura avanza con cada intento: desde el tercero aparece
-  // la pista romántica sobre ese día tan especial.
+  // Los comentarios especiales sí dependen de lo que haya escrito.
   if (entered === "anilu") {
-    revealHint(2);
     showFeedback(
       "Encontraste una parte... pero una contraseña tan importante no podía ser tan cortita, ¿no? 👀",
       "Encontraste una parte, mi amor, sigue intentando. ❤️"
     );
   } else if (entered === "100903") {
-    revealHint(attempts >= 3 ? 3 : 3);
     showFeedback(
       "También encontraste una parte... pero todavía falta saber de quién estamos hablando. ❤️",
       "No podía ser tan corto, ¿verdad? 👀"
@@ -93,24 +96,16 @@ function checkPassword(event) {
     entered === "princesaanita" ||
     entered === "anita"
   ) {
-    revealHint(attempts >= 3 ? 3 : 2);
     showFeedback(
       "Estás cerca. Hay un nombre que alguien de tu familia te decía de una manera muy especial... 👀",
       "Estas cerca mi amor pero hay un nombre mas especial"
     );
   } else if (entered === "ana100903" || entered === "ana") {
-    revealHint(attempts >= 3 ? 3 : 1);
     showFeedback(
       "Estás cerca... pero hay alguien de tu familia que te llamó de una manera muy especial. ¿Recuerdas?",
       "Sigue buscando mi amor, estoy segura de que lo recuerdas. 🥰"
     );
   } else {
-    // No importa qué escriba: al tercer intento ya recibe la pista 3.
-    if (attempts === 1) revealHint(1);
-    else if (attempts === 2) revealHint(2);
-    else if (attempts < 6) revealHint(3);
-    else revealHint(4);
-
     showFeedback(
       "Recuerda que todas las respuestas están relacionadas contigo. ❤️",
       "Sigue las pistas mi niña, estás a punto de lograrlo. 🥰"
@@ -129,7 +124,7 @@ function unlock() {
   createHeartBurst();
 
   setTimeout(() => {
-    successOverlay.classList.add("active");
+    successOverlay.classList.add("show");
   }, 450);
 }
 
@@ -178,9 +173,16 @@ const envelope = document.getElementById("envelope");
 const openLetterButton = document.getElementById("openLetterButton");
 const letterPaper = document.getElementById("letterPaper");
 
-continueButton.addEventListener("click", () => {
-  successOverlay.classList.remove("active");
-  setTimeout(() => { letterScene.classList.add("show"); document.body.style.overflow = "hidden"; }, 350);
+continueButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  successOverlay.classList.remove("show");
+  setTimeout(() => {
+    successOverlay.style.display = "none";
+    letterScene.classList.add("show");
+    letterScene.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+  }, 400);
 });
 
 openLetterButton.addEventListener("click", () => {
