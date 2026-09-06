@@ -389,7 +389,7 @@ h1 span {
   transition: opacity .45s ease, visibility .45s ease;
 }
 
-.success-overlay.active {
+.success-overlay.show {
   opacity: 1;
   visibility: visible;
 }
@@ -406,7 +406,7 @@ h1 span {
   transition: transform .5s cubic-bezier(.2,.8,.2,1);
 }
 
-.success-overlay.active .success-content {
+.success-overlay.show .success-content {
   transform: scale(1) translateY(0);
 }
 

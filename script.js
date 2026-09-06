@@ -69,16 +69,16 @@ function checkPassword(event) {
   shakeCard();
 
   /*
-    La pista SIEMPRE depende del número de intento, nunca de lo que escriba.
-    1 -> pista 1
-    2 -> pista 2
-    3-5 -> pista 3
-    6+ -> pista 4
+    La pista inicial (1) ya está visible al entrar.
+    Después de cada intento fallido se revela la siguiente: 
+    intento 1 -> pista 2
+    intento 2 -> pista 3
+    intentos 3-5 -> sigue visible la pista 3
+    intento 6+ -> pista 4
   */
-  if (attempts === 1) revealHint(1);
-  else if (attempts === 2) revealHint(2);
-  else if (attempts < 6) revealHint(3);
-  else revealHint(4);
+  if (attempts === 1) revealHint(2);
+  else if (attempts === 2) revealHint(3);
+  else if (attempts >= 6) revealHint(4);
 
   // Los comentarios especiales sí dependen de lo que haya escrito.
   if (entered === "anilu") {
