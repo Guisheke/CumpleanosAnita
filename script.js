@@ -303,7 +303,6 @@ function launchConfetti(audioStart = null) {
   if (!confettiContainer) return;
 
   confettiContainer.innerHTML = "";
-  playConfettiSound(audioStart);
   const pieces = 150;
   const shapes = ["square", "rectangle", "circle"];
 
