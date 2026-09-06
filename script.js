@@ -172,16 +172,22 @@ togglePassword.addEventListener("click", () => {
 
 passwordForm.addEventListener("submit", checkPassword);
 
-continueButton.addEventListener("click", () => {
-  /*
-    Esta primera versión termina aquí.
-    En la siguiente etapa podemos cambiar este botón para llevar
-    a la carta de cumpleaños.
-  */
-  successOverlay.classList.remove("active");
+const letterScene = document.getElementById("letterScene");
+const envelopeStage = document.getElementById("envelopeStage");
+const envelope = document.getElementById("envelope");
+const openLetterButton = document.getElementById("openLetterButton");
+const letterPaper = document.getElementById("letterPaper");
 
-  document.querySelector(".success-content p:last-of-type").textContent =
-    "La siguiente parte de tu regalo estará aquí muy pronto. 💕";
+continueButton.addEventListener("click", () => {
+  successOverlay.classList.remove("active");
+  setTimeout(() => { letterScene.classList.add("show"); document.body.style.overflow = "hidden"; }, 350);
+});
+
+openLetterButton.addEventListener("click", () => {
+  envelope.classList.add("open");
+  openLetterButton.disabled = true;
+  openLetterButton.textContent = "Tu carta está abriéndose... 💗";
+  setTimeout(() => { envelopeStage.style.display = "none"; letterPaper.classList.add("show"); }, 1050);
 });
 
 passwordInput.addEventListener("input", () => {
